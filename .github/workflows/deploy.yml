@@ -1,4 +1,4 @@
-dinname: Deploy Angular App to GitHub Pages
+name: Deploy Angular App to GitHub Pages
 
 on:
   push:
