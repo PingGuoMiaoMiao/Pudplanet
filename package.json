@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:gh-pages": "ng build --configuration production --base-href /Pudplanet/",
+    "deploy:gh-pages": "ngh --dir=dist/netflix-clone/browser --no-silent",
+    "deploy": "npm run build:gh-pages && npm run deploy:gh-pages"
   },
   "private": true,
   "packageManager": "pnpm@10.32.1",
