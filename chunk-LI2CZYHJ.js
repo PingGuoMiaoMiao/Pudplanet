@@ -1,1 +1,0 @@
-import{L as t,Nb as n,sa as i,zb as m}from"./chunk-JI72U2HJ.js";var f=[],e=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[n.forChild(f),n]})};var s=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[m,e]})};export{s as AdminModule};
