@@ -1,4 +1,4 @@
-import { NgModule, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule, provideAppInitializer, provideBrowserGlobalErrorListeners, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
