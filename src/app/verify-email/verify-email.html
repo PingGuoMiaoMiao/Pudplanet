@@ -1,0 +1,32 @@
+<div class="auth-page">
+  <div class="bg"></div>
+  <div class="logo">
+    <div class="logo-icon">P</div>
+    <div class="logo-text">PulseScreen</div>
+  </div>
+  <div class="auth-card" appearance="outlined">
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <h2>Verifying Email...</h2>
+    </div>
+
+    <div *ngIf="!loading && success" class="success-container">
+      <mat-icon class="success-icon">check_circle</mat-icon>
+      <h1>Email Verified!</h1>
+      <p class="message">{{ message }}</p>
+      <button mat-flat-button class="action-btn" routerLink="/login">Go to Login</button>
+    </div>
+
+    <div *ngIf="!loading && !success" class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h1>Verification Failed</h1>
+      <p class="message">{{ message }}</p>
+      <div class="actions">
+        <button mat-flat-button class="action-btn" routerLink="/login">Go to Login</button>
+        <p class="resend-info">
+          Didn't receive the verification email? <a routerLink="/resend-verification">Resend it</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

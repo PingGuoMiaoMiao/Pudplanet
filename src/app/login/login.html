@@ -1,0 +1,51 @@
+<div class="auth-page">
+  <div class="bg"></div>
+
+  <div class="logo">
+    <mat-icon class="logo-icon">movie</mat-icon>
+    <span class="logo-text"></span>
+  </div>
+
+  <mat-card class="auth-card"  appearance="outlined">
+    <h1>Sign In</h1>
+    <p class="subtitle">Welcome back! Please sign in to your account.</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="form" novalidate>
+      <mat-form-field appearance="outline" class="field">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" id="email" name="email">
+        <mat-icon matPrefix>email</mat-icon>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="field">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" id="password" name="password">
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" tabindex="-1">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">{{loading ? 'Signing In...' : 'Sign In'}}</button>
+        <button class="link-btn resend" *ngIf="showResendEmail" type="button" (click)="resendVerificationEmail()">Resend Verification Email</button>
+          <button  class="link-btn forgot" type="button" (click)="forgot()">Forgot Password?</button>
+
+                  <div class="singup">
+                    <span>New to Pudplanet? <a routerLink="/signup">Sign up now.</a></span>
+                  </div>
+    </form>
+
+    <p class="signup-link">
+      New to Pudplanet? <a routerLink="/signup">Sign up now.</a>
+    </p>
+  </mat-card>
+</div>
