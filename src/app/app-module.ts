@@ -1,4 +1,4 @@
-import { NgModule, provideAppInitializer, provideBrowserGlobalErrorListeners, inject } from '@angular/core';
+import { NgModule, provideAppInitializer, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,8 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatError } from '@angular/material/form-field';
-import { MatSpinner } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -26,8 +24,9 @@ import { Home } from './user/home/home';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { ForgotPassword } from './forgot-password/forgot-password';
 import { AuthService } from './shared/services/auth-service';
+import { ResetPassword } from './reset-password/reset-password';
 @NgModule({
-  declarations: [App, Landing, Signup, VerifyEmail, Login, Home, ForgotPassword],
+  declarations: [App, Landing, Signup, VerifyEmail, Login, Home, ForgotPassword, ResetPassword],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,7 +47,6 @@ import { AuthService } from './shared/services/auth-service';
       const auth = inject(AuthService);
       return auth.initializeAuth();
     }),
-    provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
   ],
   bootstrap: [App],

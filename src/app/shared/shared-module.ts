@@ -11,12 +11,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatCardModule }   from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule }  from '@angular/material/chips';
-import { MatTableModule }  from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule }   from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -25,7 +25,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
+import { Header } from './components/header/header';
+import { ChangePasswordDialog } from './components/change-password-dialog/change-password-dialog';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -48,13 +50,29 @@ const MATERIAL_MODULES = [
   MatSlideToggleModule,
   MatSliderModule,
   MatToolbarModule,
-  MatExpansionModule
+  MatExpansionModule,
 ];
 
-
 @NgModule({
-  declarations: [],
-  imports: [RouterModule,FormsModule,ReactiveFormsModule,CommonModule, HttpClientModule, ...MATERIAL_MODULES],
-  exports: [RouterModule,FormsModule,ReactiveFormsModule,CommonModule,HttpClientModule,...MATERIAL_MODULES]
+  declarations: [ConfirmDialog, Header, ChangePasswordDialog],
+  imports: [
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    HttpClientModule,
+    ...MATERIAL_MODULES,
+  ],
+  exports: [
+    ConfirmDialog,
+    Header,
+    ChangePasswordDialog,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    HttpClientModule,
+    ...MATERIAL_MODULES,
+  ],
 })
 export class SharedModule {}

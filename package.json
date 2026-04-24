@@ -1,4 +1,4 @@
-{
+ {
   "name": "netflix-clone",
   "version": "0.0.0",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:gh-pages": "ng build --configuration production --base-href /Pudplanet/",
+    "build:gh-pages": "ng build --configuration development --base-href /Pudplanet/",
     "deploy:gh-pages": "ngh --dir=dist/netflix-clone/browser --no-silent",
     "deploy": "npm run build:gh-pages && npm run deploy:gh-pages"
   },

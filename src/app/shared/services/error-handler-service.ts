@@ -7,8 +7,8 @@ import { NotificationService } from './notification-service';
 export class ErrorHandlerService {
   constructor(private notificationService: NotificationService) {}
 
-  handle(err:any, fallbackMessage: string) {
-    const errorMsg = err.console.error.error || fallbackMessage;
+  handle(err: any, fallbackMessage: string) {
+    const errorMsg = err.error?.error || err.error?.message || fallbackMessage;
     this.notificationService.error(errorMsg);
     console.error('API Error:', err);
   }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Landing Image</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            padding: 20px;
+        }
+        .test-bg {
+            width: 100%;
+            height: 500px;
+            background-image:
+                linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.85) 100%),
+                url('/landing.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #e50914;
+            margin-bottom: 20px;
+        }
+        .test-info {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .test-direct {
+            width: 300px;
+            height: 200px;
+            background-image: url('landing.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #0aa6ff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Test Landing Image Loading</h1>
+
+        <div class="test-info">
+            <h2>Test 1: Background with CSS gradient (same as landing page)</h2>
+            <p>Using: <code>url('/landing.jpg')</code></p>
+            <div class="test-bg"></div>
+            <p>If this shows the image, the path is correct.</p>
+        </div>
+
+        <div class="test-info">
+            <h2>Test 2: Direct image reference</h2>
+            <p>Using: <code>url('landing.jpg')</code> (relative path)</p>
+            <div class="test-direct"></div>
+            <p>Check browser console for any loading errors.</p>
+        </div>
+
+        <div class="test-info">
+            <h2>Image file check:</h2>
+            <p>Image should be at: <code>dist/netflix-clone/browser/landing.jpg</code></p>
+            <p>File exists: <span id="file-exists">Checking...</span></p>
+            <button onclick="checkImage()">Check Image Load</button>
+        </div>
+    </div>
+
+    <script>
+        function checkImage() {
+            const img = new Image();
+            img.onload = function() {
+                alert('Image loads successfully! Dimensions: ' + img.width + 'x' + img.height);
+            };
+            img.onerror = function() {
+                alert('Failed to load image. Check console for errors.');
+            };
+            img.src = 'landing.jpg';
+        }
+
+        // Check if file exists
+        fetch('landing.jpg')
+            .then(response => {
+                document.getElementById('file-exists').textContent = response.ok ? 'Yes' : 'No';
+                document.getElementById('file-exists').style.color = response.ok ? '#4caf50' : '#e50914';
+            })
+            .catch(() => {
+                document.getElementById('file-exists').textContent = 'No (fetch failed)';
+                document.getElementById('file-exists').style.color = '#e50914';
+            });
+    </script>
+</body>
+</html>

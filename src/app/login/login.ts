@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth-service';
 import { NotificationService } from '../shared/services/notification-service';
 import { ErrorHandlerService } from '../shared/services/error-handler-service';
-
 
 @Component({
   selector: 'app-login',
@@ -24,7 +23,8 @@ export class Login {
     private authService: AuthService,
     private router: Router,
     private notification: NotificationService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -41,6 +41,8 @@ export class Login {
   submit() {
     console.log('submit called');
     this.loading = true;
+    this.cdr.detectChanges(); // 手动触发变更检测
+
     const formData = this.loginForm.value;
     console.log('formData:', formData);
     const authdata = {
@@ -49,25 +51,26 @@ export class Login {
     };
     console.log('authdata:', authdata);
     console.log('before login request');
+
     this.authService.login(authdata).subscribe({
       next: (response: any) => {
         console.log('login request success');
-        this.loading = false;
         console.debug('[Login] 登录成功，响应：', response);
         if (!response || !response.token) {
           console.error('[Login] 响应无 token:', response);
         }
-        this.authService.handleAuthSuccess(response);
+        // handleAuthSuccess is already called via tap() in authService.login()
         // 登录成功后直接根据角色跳转，避免 currentUser 异步问题
         if (response.role === 'ADMIN') {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);
         }
+        this.loading = false;
+        this.cdr.detectChanges(); // 手动触发变更检测
       },
       error: (err: any) => {
         console.log('login request error', err);
-        this.loading = false;
         const errorMsg = err?.error?.message || err?.error?.err || 'Login failed. Please check your credentials and try again.';
         if (err.status === 403 && errorMsg.toLowerCase().includes('verified')) {
           this.showResendEmail = true;
@@ -77,7 +80,8 @@ export class Login {
         }
         this.notification.error(errorMsg);
         console.error('[Login] 登录失败:', err);
-        debugger;
+        this.loading = false;
+        this.cdr.detectChanges(); // 手动触发变更检测
       },
       complete: () => {
         console.debug('[Login] 登录流程 complete');
@@ -95,7 +99,7 @@ export class Login {
     this.authService.resendVerificationEmail(this.userEmail).subscribe({
       next: (response: any) => {
         this.loading = false;
-            this.notification.success(response?.message || 'Verification email resent! Please check your inbox.');
+        this.notification.success(response?.message || 'Verification email resent! Please check your inbox.');
       },
       error: (err: any) => {
         this.loading = false;
@@ -108,5 +112,3 @@ export class Login {
     this.router.navigate(['/forgot-password']);
   }
 }
-
-

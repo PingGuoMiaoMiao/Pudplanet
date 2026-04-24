@@ -29,7 +29,7 @@ export class Signup implements OnInit {
       fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, this.authService.passwrodMatchValidator('password')]]
+      confirmPassword: ['', [Validators.required, this.authService.passwordMatchValidator('password')]]
     });
   }
 
@@ -66,7 +66,6 @@ export class Signup implements OnInit {
         this.loading = false;
         console.error('[Signup] 注册失败:', err);
         this.errorHandlerService.handle(err, 'Signup failed. Please try again later.');
-        debugger;
       }
     });
 }
