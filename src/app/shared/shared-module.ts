@@ -28,6 +28,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
 import { Header } from './components/header/header';
 import { ChangePasswordDialog } from './components/change-password-dialog/change-password-dialog';
+import { VideoList } from './components/video-list/video-list';
+import { VideoPlayer } from './components/video-player/video-player';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -54,7 +56,7 @@ const MATERIAL_MODULES = [
 ];
 
 @NgModule({
-  declarations: [ConfirmDialog, Header, ChangePasswordDialog],
+  declarations: [ConfirmDialog, Header, ChangePasswordDialog, VideoList, VideoPlayer],
   imports: [
     RouterModule,
     FormsModule,
@@ -67,6 +69,8 @@ const MATERIAL_MODULES = [
     ConfirmDialog,
     Header,
     ChangePasswordDialog,
+    VideoList,
+    VideoPlayer,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,

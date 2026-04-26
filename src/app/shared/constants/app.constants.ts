@@ -53,7 +53,7 @@ export const DIALOG_CONFIG = {
     hasBackdrop: true,
     disableClose: false,
   },
-  VIDEO_FROM:{
+  VIDEO_FORM:{
     width:'95vw',
     maxWidth: '1400px',
     height:'auto',

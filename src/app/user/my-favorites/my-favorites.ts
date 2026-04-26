@@ -10,21 +10,18 @@ import { MediaService } from '../../shared/services/media-service';
 import { UtilityService } from '../../shared/services/utility-service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-my-favorites',
   standalone: false,
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './my-favorites.html',
+  styleUrl: './my-favorites.css',
 })
-export class Home implements OnInit, OnDestroy {
+export class MyFavorites implements OnInit, OnDestroy {
   allVideos: any[] = [];
   filteredVideos: any[] = [];
   loading = true;
   loadingMore = false;
   error = false;
   searchQuery = '';
-  featuredVideos: any[] = [];
-  currentSlideIndex = 0;
-  featuredLoading = true;
 
   currentPage = 0;
   pageSize = 10;
@@ -33,7 +30,6 @@ export class Home implements OnInit, OnDestroy {
   hasMoreVideos = true;
 
   private searchSubject = new Subject<string>();
-  private sliderInterval: any;
   private savedScrollPosition = 0;
 
   constructor(
@@ -44,17 +40,15 @@ export class Home implements OnInit, OnDestroy {
     public mediaService: MediaService,
     private dialogService: DialogService,
     private errorHandlerService: ErrorHandlerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.loadFeaturedVideos();
     this.loadVideos();
     this.initializeSearchDebounce();
   }
 
   ngOnDestroy(): void {
     this.searchSubject.complete();
-    this.stopSlider();
   }
 
   initializeSearchDebounce() {
@@ -79,59 +73,6 @@ export class Home implements OnInit, OnDestroy {
     ) {
       this.loadMoreVideos();
     }
-  }
-
-  loadFeaturedVideos() {
-    this.featuredLoading = true;
-    this.videoService.getFeaturedVideos().subscribe({
-      next: (response: any) => {
-        this.featuredVideos = response.content;
-        this.featuredLoading = false;
-        if (this.featuredVideos.length > 1) {
-          this.startSlider();
-        }
-      },
-      error: (err) => {
-        this.featuredLoading = false;
-        this.errorHandlerService.handle(err, 'Failed to load featured videos. Please try again later.');
-      }
-    });
-  }
-
-  private startSlider() {
-    this.sliderInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000);
-  }
-
-  private stopSlider() {
-    if (this.sliderInterval) {
-      clearInterval(this.sliderInterval);
-    }
-  }
-
-  nextSlide() {
-    if (this.featuredVideos.length > 0) {
-      this.currentSlideIndex = (this.currentSlideIndex + 1) % this.featuredVideos.length;
-    }
-  }
-
-  prevSlide() {
-    if (this.featuredVideos.length > 0) {
-      this.currentSlideIndex = (this.currentSlideIndex - 1 + this.featuredVideos.length) % this.featuredVideos.length;
-    }
-  }
-
-  goToSlide(index: number) {
-    this.currentSlideIndex = index;
-    this.stopSlider();
-    if (this.featuredVideos.length > 1) {
-      this.startSlider();
-    }
-  }
-
-  getCurrentFeaturedVideo() {
-    return this.featuredVideos[this.currentSlideIndex] || null;
   }
 
   loadVideos(page: number = 0) {
@@ -162,7 +103,7 @@ export class Home implements OnInit, OnDestroy {
           }, 0);
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading videos:', err);
         this.error = true;
         this.loading = false;
@@ -186,7 +127,7 @@ export class Home implements OnInit, OnDestroy {
         this.hasMoreVideos = this.currentPage < response.totalPages - 1;
         this.loadingMore = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.notification.error('Failed to load more videos. Please try again later.');
         this.loadingMore = false;
       }
@@ -214,39 +155,6 @@ export class Home implements OnInit, OnDestroy {
     return video.isInWatchlist === true;
   }
 
-  toggleWatchlist(video: any, event?: Event) {
-    if (event) {
-      event.stopPropagation();
-    }
-
-    const videoId = video.id;
-    const isInList = this.isInWatchlist(video);
-
-    if (isInList) {
-      video.isInWatchlist = false;
-      this.watchlistService.removeFromWatchlist(videoId).subscribe({
-        next: (response: any) => {
-          this.notification.success(response?.message || 'Removed from watchlist');
-        },
-        error: (err) => {
-          video.isInWatchlist = true;
-          this.errorHandlerService.handle(err, 'Failed to remove from watchlist. Please try again later.');
-        }
-      });
-    } else {
-      video.isInWatchlist = true;
-      this.watchlistService.addToWatchlist(videoId).subscribe({
-        next: (response: any) => {
-          this.notification.success(response?.message || 'Added to watchlist');
-        },
-        error: (err) => {
-          video.isInWatchlist = false;
-          this.errorHandlerService.handle(err, 'Failed to add to watchlist. Please try again later.');
-        }
-      });
-    }
-  }
-
   getPosterUrl(video: any) {
     return this.mediaService.getMediaUrl(video, 'image', {
       useCache: true,
@@ -259,5 +167,23 @@ export class Home implements OnInit, OnDestroy {
 
   formatDuration(seconds: number | undefined): string {
     return this.utilityService.formatDuration(seconds);
+  }
+
+  toggleWatchlist(video: any, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const videoId = video.id;
+    this.watchlistService.removeFromWatchlist(videoId).subscribe({
+      next: () => {
+        this.allVideos = this.allVideos.filter((v) => v.id !== videoId);
+        this.filteredVideos = this.filteredVideos.filter((v) => v.id !== videoId);
+        this.notification.success('Video removed from your favorites.');
+      },
+      error: (err: any) => {
+        this.errorHandlerService.handle(err, 'Failed to update favorites. Please try again later.');
+      }
+    });
   }
 }

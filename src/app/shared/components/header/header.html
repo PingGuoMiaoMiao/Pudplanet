@@ -43,7 +43,7 @@
             <mat-icon>account_circle</mat-icon>
           </div>
           <div class="user-details">
-            <div class="user-email">{{currentUser?.email}}</div>
+            <div class="user-email">{{currentUser?.email || 'User'}}</div>
             <div class="user-role-badge" [class.admin]="isAdmin()">
               <mat-icon class="role-icon">{{isAdmin() ? 'admin_panel_settings' : 'person'}}</mat-icon>
               {{currentUser?.role }}

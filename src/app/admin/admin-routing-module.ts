@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminDashboard } from './admin-dashboard/admin-dashboard';
+import { VideoList } from './video-list/video-list';
+import { UserList } from './user-list/user-list';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminDashboard
-  }
+    children: [
+      { path: '', redirectTo: 'videos', pathMatch: 'full' },
+      { path: 'videos', component: VideoList },
+      {path:'users',component:UserList}
+    ],
+  },
 ];
 
 @NgModule({
@@ -14,4 +19,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AdminRoutingModule {}
-

@@ -4,14 +4,15 @@ import { Observable } from 'rxjs';
 import { DIALOG_CONFIG } from '../constants/app.constants';
 import { ChangePasswordDialog } from '../components/change-password-dialog/change-password-dialog';
 import { ConfirmDialog } from '../components/confirm-dialog/confirm-dialog';
+import { ManageVideo } from '../../admin/dialog/manage-video/manage-video';
+import { VideoPlayer } from '../components/video-player/video-player';
+import { ManageUser } from '../../admin/dialog/manage-user/manage-user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
-  constructor(
-    private dialog: MatDialog,
-  ) {}
+  constructor(private dialog: MatDialog) {}
 
   openChangePasswordDialog(): MatDialogRef<ChangePasswordDialog> {
     return this.dialog.open(ChangePasswordDialog, DIALOG_CONFIG.CHANGE_PASSWORD);
@@ -31,10 +32,45 @@ export class DialogService {
         message,
         confirmText,
         cancelText,
-        type
-      }
+        type,
+      },
     });
 
     return dialogRef.afterClosed();
+  }
+
+  openVideoFormDialog(
+    mode: 'create' | 'edit',
+    video?: any
+  ): MatDialogRef<ManageVideo> {
+    return this.dialog.open(ManageVideo, {
+      ...DIALOG_CONFIG.VIDEO_FORM,
+      data: {
+        mode,
+        video,
+      },
+    });
+  }
+
+  openVideoPlayer(video: any) {
+    return this.dialog.open(VideoPlayer, {
+      ...DIALOG_CONFIG.VIDEO_PLAYER,
+      data: {
+        video,
+      },
+    });
+  }
+
+  openManageUserDialog(
+    mode: 'create' | 'edit',
+    user?: any
+  ): MatDialogRef<ManageUser> {
+    return this.dialog.open(ManageUser, {
+      ...DIALOG_CONFIG.MANAGE_USER,
+      data: {
+        mode,
+        user,
+      },
+    });
   }
 }
